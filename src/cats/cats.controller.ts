@@ -1,15 +1,17 @@
-import { Body, Controller, Delete, Get, Header, HttpCode, Param, Post, Put, Query, Redirect, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpCode, HttpStatus, Param, Post, Put, Query, Redirect, Req, Res } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateCatDto } from 'src/dtos/create-cat.dtos';
 import { UpdateCatDto } from 'src/dtos/update-cat.dtos';
+import { Cat } from 'src/interface/cats.interface';
+import { CatsService } from 'src/services/cats/cats.service';
 
 @Controller('cats')
 export class CatsController {
+    constructor(private readonly catService: CatsService){}
     @Get()
-    @Redirect("https://nestjs.com", 200)
-    findAll(@Req() request: Request): string{
-        console.log("TESTING FOR THE CATS CONTROLLER");
-        return "The cats controller has been updated with the req";
+    async findAll(): Promise<Cat[]>{
+        console.log(this.catService.findAll());
+        return this.catService.findAll();
     }
 
     @Get("abc*ndfh")
@@ -21,8 +23,8 @@ export class CatsController {
     @Header("Cache-Control", "none")
     @HttpCode(201)
     async create(@Body() createCatDto: CreateCatDto){
-        console.log(createCatDto);
-        return createCatDto;
+        this.catService.create(createCatDto);
+        console.log(this.catService.create(createCatDto));
     }
 
     @Get("docs")
@@ -56,5 +58,5 @@ export class CatsController {
         return `This action removes ${id} Cat`;
     }
 
-    
+
 }
