@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Header, HttpCode, Param, Post, Query, Redirect, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpCode, Param, Post, Put, Query, Redirect, Req } from '@nestjs/common';
 import { Request } from 'express';
 import { CreateCatDto } from 'src/dtos/create-cat.dtos';
+import { UpdateCatDto } from 'src/dtos/update-cat.dtos';
 
 @Controller('cats')
 export class CatsController {
@@ -42,4 +43,18 @@ export class CatsController {
     findOnes(@Param("id") id:string){
         console.log(`${id}`);
     }
+
+    @Put(":id")
+    updateCat(@Param("id") id:string, @Body() updateCatDto: UpdateCatDto){
+        console.log(id);
+        return `This action updates ${id}`;
+    }
+
+    @Delete(":id")
+    removeCat(@Param("id") id:string){
+        console.log(id);
+        return `This action removes ${id} Cat`;
+    }
+
+    
 }
