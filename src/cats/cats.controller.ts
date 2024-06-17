@@ -1,4 +1,4 @@
-import { Controller, Get, Header, HttpCode, Post, Redirect, Req } from '@nestjs/common';
+import { Controller, Get, Header, HttpCode, Param, Post, Query, Redirect, Req } from '@nestjs/common';
 import { Request } from 'express';
 
 @Controller('cats')
@@ -20,5 +20,19 @@ export class CatsController {
     @HttpCode(201)
     create(): string{
         return "action that adds an item";
+    }
+
+    @Get("docs")
+    @Redirect("https://nestjs.com", 302)
+    getDocs(@Query('version') version){
+        if(version && version === "5"){
+            return {url: "https://docs.nestjs.com/v5/"}
+        }
+    }
+
+    @Get(":id")
+    findOne(@Param() params:any): string{
+        console.log(`ID val: ${params.id}`);
+        return `This action requires ${params.id}`;
     }
 }
