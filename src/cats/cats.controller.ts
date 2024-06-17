@@ -1,5 +1,6 @@
-import { Controller, Get, Header, HttpCode, Param, Post, Query, Redirect, Req } from '@nestjs/common';
+import { Body, Controller, Get, Header, HttpCode, Param, Post, Query, Redirect, Req } from '@nestjs/common';
 import { Request } from 'express';
+import { CreateCatDto } from 'src/dtos/create-cat.dtos';
 
 @Controller('cats')
 export class CatsController {
@@ -18,8 +19,9 @@ export class CatsController {
     @Post()
     @Header("Cache-Control", "none")
     @HttpCode(201)
-    create(): string{
-        return "action that adds an item";
+    async create(@Body() createCatDto: CreateCatDto){
+        console.log(createCatDto);
+        return createCatDto;
     }
 
     @Get("docs")
@@ -34,5 +36,10 @@ export class CatsController {
     findOne(@Param() params:any): string{
         console.log(`ID val: ${params.id}`);
         return `This action requires ${params.id}`;
+    }
+
+    @Get(":id")
+    findOnes(@Param("id") id:string){
+        console.log(`${id}`);
     }
 }
